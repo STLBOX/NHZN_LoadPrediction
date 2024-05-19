@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>历史负荷查询</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="icon" href="{{ url_for('static', filename='img/icon.png') }}">
+    <link rel="stylesheet"  href="{{ url_for('static', filename='css/hisload.css') }}">
+</head>
+
+
+<body>
+  <div class="main">
+      <div class="nav">泗洪电力保供负荷分析应用</div>
+      <div class="nav_btn">
+          <div class="btn_left">
+              <div class="btn_show" id="current-time"  style="width: 14vw">{{template_data.time}}</div>
+              <div class="btn_show"  style="width: 14vw">预测功率:<span id="updata_nav_prediction_power">{{template_data.load}}</span>MW</div>
+          </div>
+
+          <div class="btn_right">
+              <div class="btn_list"  id="mainpage">首页</div>
+              <div class="btn_list">气象统计</div>
+              <div class="btn_list">其余行业</div>
+          </div>
+      </div>
+      <div class="content1">
+          <div class="content_curve">
+              <div class="curve_fig" id="history_load"></div>
+              <div class="curve_title">宿迁市工业用户历史功率曲线查询结果</div>
+          </div>
+          <div class="content_pie">
+              <div class="pie_fig" id="load_pie"></div>
+              <div class="pie_title" id="pieTitle">{{template_data.pie_time}}<br>宿迁市各区县工业用户功率占比</div>
+          </div>
+      </div>
+      <div class="content2">
+            <div class="table_title">查询区间内数据统计表格</div>
+            <div class="table">
+            <table id="max_power_info" class="table_content">
+            <thead>
+            <tr>
+                <th class="col1">区域</th>
+                <th class="col2">最高功率(MW)</th>
+                <th class="col3">对应时间</th>
+                <th class="col4">温度(&#8451;)</th>
+                <th class="col5">湿度(&#37;)</th>
+                <th class="col6">风速(m/s)</th>
+                <th class="col6">降水(mm)</th>
+                <th class="col7">最低功率(MW)</th>
+                <th class="col8">平均功率(MW)</th>
+            </tr>
+            </thead>
+            <tr>
+                <td>泗洪</td>
+                <td>{{template_data.max_info[0][0]}}</td>
+                <td>{{template_data.max_info[0][1]}}</td>
+                <td>{{template_data.max_info[0][2]}}</td>
+                <td>{{template_data.max_info[0][3]}}</td>
+                <td>{{template_data.max_info[0][4]}}</td>
+                <td>{{template_data.max_info[0][5]}}</td>
+                <td>{{template_data.max_info[0][6]}}</td>
+                <td>{{template_data.max_info[0][7]}}</td>
+            </tr>
+            <tr>
+                <td>宿迁市区</td>
+                <td>{{template_data.max_info[1][0]}}</td>
+                <td>{{template_data.max_info[1][1]}}</td>
+                <td>{{template_data.max_info[1][2]}}</td>
+                <td>{{template_data.max_info[1][3]}}</td>
+                <td>{{template_data.max_info[1][4]}}</td>
+                <td>{{template_data.max_info[1][5]}}</td>
+                <td>{{template_data.max_info[1][6]}}</td>
+                <td>{{template_data.max_info[1][7]}}</td>
+            </tr>
+            <tr>
+                <td>沭阳</td>
+                <td>{{template_data.max_info[2][0]}}</td>
+                <td>{{template_data.max_info[2][1]}}</td>
+                <td>{{template_data.max_info[2][2]}}</td>
+                <td>{{template_data.max_info[2][3]}}</td>
+                <td>{{template_data.max_info[2][4]}}</td>
+                <td>{{template_data.max_info[2][5]}}</td>
+                <td>{{template_data.max_info[2][6]}}</td>
+                <td>{{template_data.max_info[2][7]}}</td>
+            </tr>
+            <tr>
+                <td>泗阳</td>
+                <td>{{template_data.max_info[3][0]}}</td>
+                <td>{{template_data.max_info[3][1]}}</td>
+                <td>{{template_data.max_info[3][2]}}</td>
+                <td>{{template_data.max_info[3][3]}}</td>
+                <td>{{template_data.max_info[3][4]}}</td>
+                <td>{{template_data.max_info[3][5]}}</td>
+                <td>{{template_data.max_info[3][6]}}</td>
+                <td>{{template_data.max_info[3][7]}}</td>
+            </tr>
+            <tfoot>
+            <tr>
+                 <td colspan="4"></td>
+            </tr>
+            </tfoot>
+            </table>
+            </div>
+
+      </div>
+      <div class="content3">
+          <form id="queryForm">
+              <label for="start_date">开始日期:</label>
+              <input type="date" id="start_date" name="start_date" required>
+
+              <label for="end_date">结束日期:</label>
+              <input type="date" id="end_date" name="end_date" required>
+
+              <button type="button" onclick="queryData()">查询</button>
+          </form>
+          <button type="button" onclick="downloadData()">下载</button>
+      </div>
+  </div>
+</body>
+
+</html>
+
+
+<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/echarts.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dataScoll.js') }}"></script>
+
+<script>
+    // 获取当前日期
+    var currentDate = new Date();
+    // 计算前一天日期
+    currentDate.setDate(currentDate.getDate() - 1);
+    // 将日期格式化为 "YYYY-MM-DD"
+    var formattedDate = currentDate.toISOString().split('T')[0];
+    // 设置输入框的默认值
+    document.getElementById('start_date').value = formattedDate;
+    document.getElementById('end_date').value = formattedDate;
+</script>
+
+
+<script>
+    function queryData() {
+        var start_date = document.getElementById('start_date').value;
+        var end_date = document.getElementById('end_date').value;
+
+        // 使用AJAX发送POST请求
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/query_data', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    var page_data = JSON.parse(xhr.responseText);
+                    curve_time = page_data.curve_time
+                    curve_sh = page_data.curve_sh
+                    curve_pred_sh = page_data.curve_pred_sh
+                    curve_sq = page_data.curve_sq
+                    curve_suyang= page_data.curve_suyang
+                    curve_siyang = page_data.curve_siyang
+
+                    SQCurve.setOption({
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: {type: 'cross'},
+                                formatter: function (params, ticket, callback) {
+                                    let index = params[0].dataIndex;
+                                    let Htm = `${page_data.curve_time[index]}<br>`
+                                    Htm += `泗洪功率:${page_data.curve_sh[index]}MW<br>
+                                        泗洪预测功率:${page_data.curve_pred_sh[index]}MW<br>
+                                        宿迁市区功率:${page_data.curve_sq[index]}MW<br>
+                                        沭阳功率:${page_data.curve_suyang[index]}MW<br>
+                                        泗阳功率:${page_data.curve_siyang[index]}MW<br>`
+                                    return Htm;
+                                }
+                            },
+                            series: [
+                                {
+                                    data: page_data.curve_sh.map(function (value, index) {
+                                        return [page_data.curve_time[index], value];
+                                    })
+                                },
+                                {
+                                    data: page_data.curve_pred_sh.map(function (value, index) {
+                                        return [page_data.curve_time[index], value];
+                                    })
+                                },
+                                {
+                                    data: page_data.curve_sq.map(function (value, index) {
+                                        return [page_data.curve_time[index], value];
+                                    })
+                                },
+                                {
+                                    data: page_data.curve_suyang.map(function (value, index) {
+                                        return [page_data.curve_time[index], value];
+                                    })
+                                },
+                                {
+                                    data: page_data.curve_siyang.map(function (value, index) {
+                                        return [page_data.curve_time[index], value];
+                                    })
+                                }
+                            ]
+                        }
+                    );
+                    var pieTitleElement = document.getElementById('pieTitle');
+                     // 更新标题元素的内容
+                    pieTitleElement.innerHTML = page_data.curve_time[0] + "<br>宿迁市各区县工业用户功率占比";
+                    SQPie.setOption({
+                       series: [
+                        {
+                        data: [
+                            { value: page_data.pie_data[0], name: '泗洪', itemStyle: { color: colors[0] } },
+                            { value: page_data.pie_data[1], name: '宿迁市区', itemStyle: { color: colors[1] } },
+                            { value: page_data.pie_data[2], name: '沭阳', itemStyle: { color: colors[2] } },
+                            { value: page_data.pie_data[3], name: '泗阳', itemStyle: { color: colors[3] } },
+                            ]
+                        }
+                      ]
+                    });
+                    // 设置表格
+                    var max_table = document.getElementById('max_power_info');
+                    for (var i = 1; i < max_table.rows.length; i++) {
+                        max_table.rows[i].cells[1].textContent = page_data.max_info[i-1][0];
+                        max_table.rows[i].cells[2].textContent = page_data.max_info[i-1][1];
+                        max_table.rows[i].cells[3].textContent = page_data.max_info[i-1][2];
+                        max_table.rows[i].cells[4].textContent = page_data.max_info[i-1][3];
+                        max_table.rows[i].cells[5].textContent = page_data.max_info[i-1][4];
+                        max_table.rows[i].cells[6].textContent = page_data.max_info[i-1][5];
+                        max_table.rows[i].cells[7].textContent = page_data.max_info[i-1][6];
+                        max_table.rows[i].cells[8].textContent = page_data.max_info[i-1][7];
+                    }
+                }
+            }
+        };
+        xhr.send('start_date=' + start_date + '&end_date=' + end_date);
+    }
+
+    function downloadData(){
+        let  csvContent = 'Time,Sihong(MW),Suqian(MW),Shuyang(MW),Siyang(MW)\n '
+        for (var i = 0; i < curve_time.length; i++) {
+            csvContent += curve_time[i] + ',' + curve_sh[i] + ',' + curve_sq[i] + ',' + curve_suyang[i] + ',' + curve_siyang[i] + '\n';
+        }
+        // 创建一个Blob对象
+        var blob = new Blob([csvContent], { type: 'text/csv' });
+         // 创建一个下载链接
+        var link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        // 设置下载文件的名称
+        link.download = 'power_data.csv';
+        // 将链接添加到页面中，并触发点击
+        document.body.appendChild(link);
+        link.click();
+        // 移除链接
+        document.body.removeChild(link);
+    }
+</script>
+
+
+<script>
+    // 绘制拆查询的历史曲线， 默认查询结果为K-1天
+    var SQCurve = echarts.init(document.getElementById('history_load'));
+    var SQPie = echarts.init(document.getElementById('load_pie'));
+
+    var curve_time = {{ template_data['curve_time']|tojson|safe }};
+    var curve_sh = {{ template_data['curve_sh']|tojson|safe }};
+    var curve_pred_sh = {{ template_data['curve_pred_sh']|tojson|safe }};
+    var curve_sq = {{ template_data['curve_sq']|tojson|safe }};
+    var curve_suyang = {{ template_data['curve_suyang']|tojson|safe }};
+    var curve_siyang = {{ template_data['curve_siyang']|tojson|safe }};
+    var pie_data = {{ template_data['pie_data']|tojson|safe }};
+
+    let colors = ['#ea2721','#7fdc3b', '#27a5e3', 'rgba(246,140,35,0.93)'];  // 泗洪 宿迁 沭阳 泗阳
+
+    option_curve = {
+        color: colors,
+        legend: {
+            data: ['泗洪', '泗洪预测', '宿迁市区', '沭阳', '泗阳'],
+            textStyle: {
+                color: '#fff' // 设置图例文字颜色
+            },
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: { type: 'cross' },
+            formatter: function (params, ticket, callback) {
+                let index = params[0].dataIndex;
+                let Htm = `${curve_time[index]}<br>`
+                Htm += `泗洪功率:${curve_sh[index]}MW<br>
+                        泗洪预测功率:${curve_pred_sh[index]}MW<br>
+                        宿迁市区功率:${curve_sq[index]}MW<br>
+                        沭阳功率:${curve_suyang[index]}MW<br>
+                        泗阳功率:${curve_siyang[index]}MW<br>`
+                return Htm;
+            }
+        },
+        dataZoom: {
+            bottom: '1%',
+            height: '16',
+            dataBackground: {
+                lineStyle: { color:'#fff'},
+                areaStyle: { color:'#fff' }
+            },
+            borderColor: '#fff',
+            textStyle: { color: '#fff' },
+            start: 0,
+            end: 100,
+            xAxisIndex: [0, 1, 2, 3]
+        },
+        grid: {
+            top: '15%',
+            bottom: '20%',
+            left: '18.5%',
+            right: '18.5%'
+        },
+        xAxis: {
+            name: '时间',
+            nameTextStyle: {color: '#fff'},
+            position: 'bottom',
+            offset: 13,
+            type: 'time',
+            axisTick: { alignWithLabel: true,
+                        textStyle: { color: '#fff' },
+                        lineStyle:{color:'#fff'},
+                        inside: true},
+            nameTextStyle: { color:'#fff' },
+            axisLabel: {
+                color: '#fff',
+                textStyle: {
+                    fontSize: '1vw'  // 设置 x 轴刻度标签的字体大小
+                }
+         }
+        },
+        yAxis: {
+            type: 'value',
+            name: '负荷(MW)',
+            position: 'left',
+            offset: 11,
+            axisTick: {show: true, lineStyle: { color: '#fff' }, inside: true },
+            nameTextStyle: { color:'#fff' },
+            axisLabel: { color: '#fff'},
+            splitLine: { show: false },
+        },
+        series: [{
+            name: '泗洪',
+            data: curve_sh.map(function (value, index) {
+                return [curve_time[index], value];
+            }),
+            showSymbol: true,
+            symbolSize: 2,  // 设置点的大小
+            type: 'line',
+            color: colors[0],
+            {#yAxisIndex: 0,#}
+        }, {
+            name: '泗洪预测',
+            data: curve_pred_sh.map(function (value, index) {
+                return [curve_time[index], value];
+            }),
+            showSymbol: true,
+            symbolSize: 2,  // 设置点的大小
+            type: 'line',
+            lineStyle: {
+                type: 'dashed', // 或 'dotted'，根据需要选择虚线类型
+                color: colors[0] // 线条颜色
+            },
+        },
+        {
+            name: '宿迁市区',
+            data: curve_sq.map(function (value, index) {
+                return [curve_time[index], value];
+            }),
+            showSymbol: true,
+            symbolSize: 2,  // 设置点的大小
+            type: 'line',
+             color: colors[1],
+            {#yAxisIndex: 1,#}
+        },
+        {
+            name: '沭阳',
+            data: curve_suyang.map(function (value, index) {
+                return [curve_time[index], value];
+            }),
+            showSymbol: true,
+            symbolSize: 2,  // 设置点的大小
+            type: 'line',
+            color: colors[2],
+            {#yAxisIndex: 2,#}
+        },
+        {
+            name: '泗阳',
+            data: curve_siyang.map(function (value, index) {
+                return [curve_time[index], value];
+
+            }),
+            showSymbol: true,
+            symbolSize: 2,  // 设置点的大小
+            type: 'line',
+            color: colors[3],
+            {#yAxisIndex: 3,#}
+        },
+        ]
+    };
+
+    option_pie = {
+      tooltip: {
+          trigger: 'item',
+          formatter: '{b}: {d}%'
+      },
+      legend: {
+          top: '5%',
+          left: 'center',
+          textStyle: {
+          color: '#fff',
+          fontSize: '1vw'
+      },
+      },
+      series: [
+        {
+          type: 'pie',
+          radius: ['45%', '68%'],
+          avoidLabelOverlap: false,
+          itemStyle: {
+            borderRadius: 10,
+            borderColor: 'transparent',  // 设置为透明
+            borderWidth: 0
+          },
+          label: {
+            show: false,
+            position: 'center'
+          },
+          emphasis: {
+            label: {
+                show: true,
+                fontSize: 25,
+                fontWeight: 'bold',
+                color: '#fff',
+            }
+          },
+          labelLine: {
+            show: false
+          },
+        data: [
+            { value: pie_data[0], name: '泗洪', itemStyle: { color: colors[0] } },
+            { value: pie_data[1], name: '宿迁市区', itemStyle: { color: colors[1] } },
+            { value: pie_data[2], name: '沭阳', itemStyle: { color: colors[2] } },
+            { value: pie_data[3], name: '泗阳', itemStyle: { color: colors[3] } },
+            ]
+        }
+      ]
+    };
+
+    SQCurve.setOption(option_curve)
+    SQPie.setOption(option_pie)
+
+    SQCurve.on('click', function (params) {
+    var dataIndex = params.dataIndex;
+    var pieTitleElement = document.getElementById('pieTitle');
+    // 更新标题元素的内容
+    pieTitleElement.innerHTML = curve_time[dataIndex] + "<br>宿迁市各区县工业用户功率占比";
+    SQPie.setOption({
+       series: [
+        {
+        data: [
+            { value: curve_sh[dataIndex], name: '泗洪', itemStyle: { color: colors[0] } },
+            { value: curve_sq[dataIndex], name: '宿迁市区', itemStyle: { color: colors[1] } },
+            { value: curve_suyang[dataIndex], name: '沭阳', itemStyle: { color: colors[2] } },
+            { value: curve_siyang[dataIndex], name: '泗阳', itemStyle: { color: colors[3] } },
+            ]
+        }
+      ]
+    });
+    });
+</script>
+
+
+<script>
+    function updateCurrentTime() {
+      var currentTimeElement = document.getElementById('current-time');
+      var now = new Date();
+      var year = now.getFullYear().toString();
+      var month = (now.getMonth()+1).toString().padStart(2, '0');
+      var day = now.getDate().toString().padStart(2, '0');
+      var hours = now.getHours().toString().padStart(2, '0');
+      var minutes = now.getMinutes().toString().padStart(2, '0');
+      // var seconds = now.getSeconds().toString().padStart(2, '0');
+      var timeString = year + '/' + month + '/' + day + '\t' + hours + ':' + minutes;
+      currentTimeElement.textContent = timeString;
+    }
+    updateCurrentTime();
+    setInterval(updateCurrentTime, 1000);
+</script>
+
+
+<script>
+function update_nav() {
+    // 发起 Ajax 请求获取新数据
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/update_nav', true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                // document.getElementById('updata_nav_prediction_power').textContent = xhr.responseText;  inerHTML
+                var data_nav = JSON.parse(xhr.responseText);
+                document.getElementById('updata_nav_prediction_power').textContent = data_nav.nowpower;
+            }
+        }
+    };
+    xhr.send();
+}
+function checkAndUpdate() {
+  const now = new Date();
+  const minutes = now.getMinutes();
+  const hours = now.getHours();
+  if (minutes === 7) {
+      update_nav();  // 间隔一个小时
+  }
+}
+
+// 立即运行一次
+update_nav();
+// 每隔1分钟检查一次
+setInterval(checkAndUpdate, 60000);
+</script>
+
+
+<script>
+    document.getElementById('mainpage').addEventListener('click', function () {
+        window.location.href = "/";
+    });
+</script>

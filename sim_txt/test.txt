@@ -1,0 +1,2 @@
+{"url":"https://ifanyi.iciba.com/index.php","headers":{"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.183"
+},"data":{"from": "zh","to": "en","q": "你好"},"params":{"c":"trans","m":"fy","client":"6","auth_user":"key_web_fanyi","sign":"0d2d6b4f80839676"}}

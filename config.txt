@@ -1,0 +1,104 @@
+{
+    "url0w":"http://egw.jn.js.sgcc.com.cn/xtjs-oauth-center/oauth/token",
+    "headers0w":{
+        "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.183"
+    },
+    "data0w":{
+        "grant_type":"client_credentials",
+        "client_id":"ztgl-app-3c74bbc4-08e9-47eb-a58c-963dcacf775d",      "client_secret":"okWc9jor9M6AZgD9ILVFX83ZhnhnPq1eSjEf1vB/bxgoAH7jYoaaZjNEwOWB5v9VM5kYu9eVJuR0Qqf6Y7lF0CaDU8WwFB8pK6x1mwKc4GKhlZUfS0/Q7HfOi2kvsCGJI"
+    },
+    "url0":"http://egw.jn.js.sgcc.com.cn/xtjs-oauth-center/oauth/token",
+    "headers0":{
+        "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.183"
+    },
+    "data0":{
+        "grant_type":"client_credentials",
+        "client_id":"ztgl-app-d05e9e96-2e8c-40d8-a643-44d986cad850",
+"client_secret":"o3PwRYIsKxnxwEPoWRW07mgNa3Am8DqEcm9QAqenJu8ZOwvqGeVFe61UjQbj8fNRYowpuh6KNygdroVVfzGKmublalFbiq0IRN4y/gnt/nKMXWYZA84mTfnOOstKsD4Ou"
+    },
+    "url1":"http://egw.jn.js.sgcc.com.cn/tps/bff/historyLineData/queryEMpCurveOfMeter",
+    "headers1":{
+        "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.183",
+        "Authorization":"",
+        "x-system-code":"ztgl-app-d05e9e96-2e8c-40d8-a643-44d986cad850",
+        "Content-Type":"application/json",
+        "Accept-Encoding":"*",
+        "token":"d90ed87c9726ef59af99aa22d2c86deaa62a394c7f4c2784ea8df6eaba2cf0b4"
+    },
+    "data1":{
+        "grant_type":"client_credentials",
+        "client_id":"ztgl-app-3c74bbc4-08e9-47eb-a58c-963dcacf775d",
+        "client_secret":"okWc9jor9M6AZgD9ILVFX83ZhnhnPq1eSjEf1vB/bxgoAH7jYoaaZjNEwOWB5v9VM5kYu9eVJuR0Qqf6Y7lF0CaDU8WwFB8pK6x1mwKc4GKhlZUfS0/Q7HfOi2kvsCGJI"
+    },
+    "params1":{
+        "espInformation":{
+            "mgtOrgCode":"32413",
+            "meterDevId":"8200000048108375",
+            "dataDateS":"2024-04-01",
+            "dataDateE":"2023-04-02",
+            "dataType":"08"
+        }
+    },
+"url2":"http://egw.jn.js.sgcc.com.cn/mc/service/mysql/data/nearestWeatherStation",
+"params2":{
+"data_from":"20",
+"device_type":"6",
+"latitude":"33.5",
+"longitude":"118.5",
+"loginid":"11"
+},
+  "headers2":{
+        "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.183",
+        "Authorization":"",
+        "x-system-code":"ztgl-app-3c74bbc4-08e9-47eb-a58c-963dcacf775d",
+        "Content-Type":"application/json",
+        "Accept-Encoding":"*"
+    },
+"url3":"http://egw.jn.js.sgcc.com.cn/mc/service/mysql/data/forecastWeatherHour",
+  "headers3":{
+        "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.183",
+        "Accept":"*/*",
+        "Accept-Encoding":"*",
+ 	"x-system-code":"ztgl-app-3c74bbc4-08e9-47eb-a58c-963dcacf775d",
+	"Authorization":""
+    },
+"params3":{
+"cycle":"HOUR",
+"data_from":"20",
+"end_time":"2023-08-07%2012%3A00%3A00",
+"id":"101191304",
+"page_num":"1",
+"page_size":"10000",
+"start_time":"2023-08-06%2011%3A00%3A00"
+},
+"url4":"http://egw.jn.js.sgcc.com.cn/mc/service/mysql/data/realWeatherInfoHis",
+  "headers4":{
+        "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.183",
+        "Authorization":"",
+        "x-system-code":"ztgl-app-3c74bbc4-08e9-47eb-a58c-963dcacf775d",
+        "Content-Type":"application/json",
+        "Accept-Encoding":"*"
+    },
+"params4":{
+"data_from":"20",
+"end_time":"2023-08-07%2012%3A00%3A00",
+"id":"101191304",
+"page_num":"1",
+"page_size":"10000",
+"start_time":"2023-08-06%2011%3A00%3A00"
+},
+"url5":"http://egw.jn.js.sgcc.com.cn/mc/service/mysql/data/realWeatherInfo",
+  "headers5":{
+        "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.183",
+        "Authorization":"",
+        "x-system-code":"ztgl-app-3c74bbc4-08e9-47eb-a58c-963dcacf775d",
+        "Content-Type":"application/json",
+        "Accept-Encoding":"*"
+    },
+"params5":{
+"ids":"101191304",
+"page_num":"1",
+"page_size":"10000",
+"source":"20"
+}
+}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>时钟</title>
+  <style>
+    .clock {
+      font-family: 'Arial', sans-serif;
+      width: 200px;
+      margin: 0 auto;
+      text-align: center;
+      font-size: 2em;
+    }
+
+    .time {
+      color: #333;
+    }
+
+    .date {
+      font-size: 0.8em;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="clock">
+    <div class="time" id="time"></div>
+    <div class="date" id="date"></div>
+  </div>
+
+  <script>
+    function updateTime() {
+      var now = new Date();
+      var hours = now.getHours().toString().padStart(2, '0');
+      var minutes = now.getMinutes().toString().padStart(2, '0');
+      var seconds = now.getSeconds().toString().padStart(2, '0');
+      var date = now.toDateString();
+
+      document.getElementById('time').textContent = `${hours}:${minutes}:${seconds}`;
+      document.getElementById('date').textContent = date;
+    }
+
+    setInterval(updateTime, 1000);
+    updateTime();
+  </script>
+</body>
+</html>

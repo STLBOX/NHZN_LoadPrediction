@@ -1,0 +1,116 @@
+2023/12/01 修改说明：
+1.如果Power表K-1时刻的电表数量小于users*0.9则需要删除重新请求
+2.Power表仅保存最近3天的数据，求和汇总总电负荷数据保存存在Totalpower表，保存近3年数据
+3.Totalpower保存近3年，Weather数据保存近3年
+
+Power
+
+class Totalpower(db.Model):
+    '''泗洪县所有用户的一天总用电量'''
+    __table_args__ = (
+        db.PrimaryKeyConstraint('number', 'date'),
+    )
+    number = db.Column(db.Integer, primary_key=True)  # 时间
+    date = db.Column(db.Date, primary_key=True)  # 日期
+    total_power = db.Column(db.Float)  # 总功率
+
+add_totalpower_recoder(datetime.now() - timedelta(days=4))
+delete_hst_data()
+
+扩展数据请求为 4 个区县 并保存到数据库中
+
+2023/12/02 修改说明：
+
+新增宿迁 沭阳 泗阳的用户信息 user_table
+class Usersuqian(db.Model)
+class Usersuyang(db.Model)
+class Usersiyang(db.Model)
+
+delete_user_table()  # 删除并从 excel中重新读取所有的用户信息
+init_user()
+
+新增数据初始化, 新增宿迁 沭阳 泗阳的历史每个用户的逐时功率
+init_power  
+    user_list = [User, Usersuqian, Usersuyang, Usersiyang]
+    power_list = [Power, Powersuqian, Powersuyang, Powersiyang]
+    total_power_list = [Totalpower, Totalpowersuqian,Totalpowersuyang, Totalpowersiyang]
+
+user
+suqian
+siyang
+suyang
+
+请求获取K-1天的功率的功能扩增到其他县区：
+getPowerData_threadingpool() -> add_totalpower_recoder(date_k1)
+
+
+2023/12/03 修改说明：
+log保存的格式修改
+delete_hst_data()
+
+# 更新线程 2 个
+# 一个负责更新气象数据，一个负责更新所有3w用户功率数据
+update_all 拆分为 update_power_thread() 和 update_weather_thread()
+
+update_power_thread():
+getPowerData_threadingpool(User, Power, Totalpower)
+...
+getPowerData_threadingpool(Usersiyang, Powersiyang, Totalpowersiyang)
+delete_hst_data()
+
+
+getWeatherDataN()  # 天气表格DATA['weather_table_data']   天气曲线DATA["weather_curve"]  仅保存到数据库，删除之前的修改全局数据的功能
+
+predict_power()  # DATA["power_curve"] DATA['power_table_data'] DATA["weather_curve"] DATA['weather_table_data'] DATA['nowpower']
+
+
+新增预测结果的数据表，用于保存历史的泗洪县的预测结果，仅保存中位数即可
+predictpower  和  totalpower 一样
+class Predictpower(db.Model)
+初始化的时候K-2的predict_power和total_power相同
+初始化的时候K-1的predict_power和total_power相同
+之后的predict_power为预测值 K 开始
+
+save_predictpower(data:list, date:datetime)
+
+
+2023/12/03 修改说明：
+初始化数据init_power 全部设置为  1
+
+1.增加 html用于 查询历史4个区县的功率数据曲线，并进行一些数据的对比展示：  饼图，
+2.用于查询各个区县用电量最高的用户， 用户信息查询
+
+
+2.增加html用于 展示历史的预测结果  并进一些预测误差的分析
+
+    template_data = {'time': datetime.now().strftime('%Y/%m/%d\t%H:%M'),
+                     'load': DATA['nowpower'],
+                     'curve_time': curve_time,
+                     'curve_sh': curve_sh,
+                     'curve_sq': curve_sq,
+                     'curve_suyang': curve_suyang,
+                     'curve_siyang': curve_siyang,
+                     'pie_data': pie_data,
+                     }
+
+
+2023/12/07 修改说明：
+1.pie图显示未动态修改
+
+2.如果readtimeout，则再次请求一次     getWeatherDataN  getWeatherDataP  getPowerData()
+
+       if isinstance(e, requests.exceptions.Timeout):
+            time.sleep(5)
+
+3.
+HTTPConnectionPool(host='egw.jn.js.sgcc.com.cn', port=80): Read timed out. (read timeout=1)
+响应 status_code != 200
+上面两个原因失败的电表号，分别保存到不同的txt文件。
+rto
+status_error
+
+
+
+
+
+

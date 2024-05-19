@@ -1,0 +1,20 @@
+{
+    "error_code":200,
+    "error_msg":"success",
+    "extra":{
+        "station_name":"泗洪",
+        "country":null,
+        "altitude":null,
+        "device_status":131,
+        "is_model_station":1,
+        "latitude":48.36,
+        "device_type":6,
+        "district_geocode":"230883",
+        "distance_um":5284.276,
+        "data_from":20,
+        "id":"101191304",
+        "province_geocode":"230000",
+        "city_geocode":"230800",
+        "longitude":134.29
+    }
+}

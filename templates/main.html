@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>泗洪电力保供</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="icon" href="{{ url_for('static', filename='img/icon.png') }}">
+    <link rel="stylesheet"  href="{{ url_for('static', filename='css/reset.css') }}">
+<!--    <script src="https://cdn.bootcdn.net/ajax/libs/video.js/5.15.0/video.min.js"></script>-->
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.15.0/videojs-contrib-hls.min.js" type="text/javascript"></script>-->
+</head>
+<style>
+    .boxRader {
+        position: relative;
+        width: 100%;
+        height: 80%;
+    }
+
+    .centerBox {
+        width: 75%;
+        margin-right: 15px;
+        background: transparent;
+    }
+
+    .boxFont {
+        font-size: 1.2vw;
+    }
+
+    .centerMainBox1 {
+        width: 100%;
+        height: 60.5%;
+    }
+
+    .centerMainBox2 {
+        width: 100%;
+        height: 38.5%;
+        position: relative;
+        margin-top: 15px;
+    }
+
+    .centerMainBox2 img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+
+    .boxTitle2 {
+        width: 100%;
+        height: 10%;
+        font-size: .6vw;
+        text-align: center;
+        line-height: 10%;
+        margin-top: 1vw;
+        color: #0efcff;
+    }
+
+    .boxLis {
+        width: 70%;
+        height: 1.5vw;
+        margin-left: 3vw;
+        margin-top: 1vw;
+        border-bottom: .02vw solid rgb(40, 229, 233);
+    }
+
+    .boxLis>li {
+        width: 4vw;
+        height: 1.4vw;
+        display: block;
+        background: rgba(40, 229, 233, .5);
+        margin-right: .5vw;
+        color: #fff;
+        line-height: 1.4vw;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .active {
+        border-bottom: .02vw solid #040A18;
+        border-top: .02vw solid rgb(40, 229, 233);
+        border-right: .02vw solid rgb(40, 229, 233);
+        border-left: .02vw solid rgb(40, 229, 233);
+    }
+
+    .contList {
+        position: relative;
+        width: 70%;
+        height: 7vw;
+        margin: 1vw auto 0;
+
+    }
+
+    .content1 li {
+        display: none;
+    }
+
+    .baseBox {
+        width: 100%;
+        border: none;
+        background: none;
+    }
+
+    .boxTitle {
+        font-size: .8vw;
+        width: 38%;
+        margin-top: 1vw;
+        text-align: center;
+    }
+
+    .right {
+        float: right;
+    }
+
+    .baseBoxLeft {
+        width: 30%;
+        height: 95%;
+        position: relative;
+    }
+
+    .baseBoxRight {
+        width: 68%;
+        height: 75%;
+    }
+
+    .baseBoxLeft img {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .maps {
+        width: 100%;
+        height: 95%;
+        margin-top: 2%;
+        background: pink;
+    }
+
+</style>
+
+<body>
+  <div class="main">
+      <div class="nav">泗洪电力保供负荷分析应用</div>
+      <div class="nav_btn">
+          <div class="btn_left">
+              <div class="btn_show" id="current-time"  style="width: 14vw">时间：00:00:00</div>
+              <div class="btn_show"  style="width: 14vw">预测功率:<span id="updata_nav_prediction_power">00</span>MW</div>
+          </div>
+
+          <div class="btn_right">
+              <div class="btn_list"  id="hisloadButton">历史负荷</div>
+              <div class="btn_list">气象统计</div>
+              <div class="btn_list">其余行业</div>
+          </div>
+      </div>
+
+      <div class="content">
+          <div class="centerBox" style="height:80%; width:73%; ">
+              <div class="baseBox centerMainBox1" style="height:100%; width:100%">
+                  <div class="baseBoxLeft left" style="height:82%; width:25%; margin-left:3%; margin-top: 5%">
+                      <div class="boxTitle"  style = "font-size: 1vw">工业功率监测</div>
+<!--                      <img src="./img/left.png" alt="">-->
+                      <img src="{{ url_for('static', filename='img/left.png') }}" alt="">
+                      <table class="equipment_table env_table">
+<!--                            <caption>预测结果</caption>-->
+                            <tr style="font-weight:bold;">
+                                <td>指标</td>
+                                <td>数值</td>
+                            </tr>
+                            <tr>
+                                <td>工业用户总数</td>
+                                <td><span id="usernums">0</span>户</td>
+                            </tr>
+                            <tr>
+                                <td>前一日最大功率</td>
+                                <td><span id="pk1max">0</span>MW</td>
+                            </tr>
+                            <tr>
+                                <td>前一日最低功率</td>
+                                <td><span id="pk1min">0</span>MW</td>
+                            </tr>
+                            <tr>
+                                <td>本日预测最大功率</td>
+                                <td><span id="pkmax">0</span>MW</td>
+                            </tr>
+                            <tr>
+                                <td>本日预测最低功率</td>
+                                <td><span id="pkmin">0</span>MW</td>
+                            </tr>
+                        </table>
+<!--                        <div style="width:95%;height:50%;margin-left:2.5%" id="wind"></div>-->
+                  </div>
+                  <div class="baseBoxRight right"  style="height:100%; width:100%; position: absolute; left: 13%">
+                        <div class="boxTitle1" style="font-size: 1vw; margin-left: 3%">工业功率监测及预测曲线</div>
+                        <div class="pred-load" id="prediction_load" style="width:86%;height:100%;"> </div>
+                  </div>
+              </div>
+          </div>
+          <div class="leftBox">
+
+          <div class="baseBox1">
+
+<!--              <img style="height:40%; width: 100% ;position: absolute; top:0%" src="./img/right2.png" alt="" >-->
+              <div class="boxTitle1" style="font-size: 1vw">实时气象数据曲线</div>
+              <div class="predshow" id="prediction" style="width:100%;height:100%;position:relative;float:left"> </div>
+
+          </div>
+
+          <div class="baseBox2">
+<!--              <img style="height:50%; width: 100%; position: absolute; top:51%" src="./img/right2.png" alt="" >-->
+              <img style="height:50%; width: 100%; position: absolute; top:51%" src="{{ url_for('static', filename='img/right2.png') }}" alt="" >
+              <div class="boxTitle2" style="font-size: 1vw; top: 52%;">预测气象数据</div>
+               <table class="equipment_table env_table" style="height:75%; width: 90%; margin-top: 14%;"  >
+                <tr style="font-weight:bold;">
+                    <td>指标</td>
+                    <td>数值</td>
+                </tr>
+                <tr>
+                    <td>今日天气状态</td>
+                    <td><span id="wtstate">**</span></td>
+                </tr>
+                <tr>
+                    <td>今日最高气温</td>
+                    <td><span id="wtmaxtemp">0</span>&#8451;</td>
+                </tr>
+                <tr>
+                    <td>今日最低气温</td>
+                    <td><span id="wtmintemp">0</span>&#8451;</td>
+                </tr>
+                <tr>
+                    <td>今日最高湿度</td>
+                    <td><span id="wtmaxhum">0</span>&#37;</td>
+                </tr>
+                <tr>
+                    <td>今日最低湿度</td>
+                    <td><span id="wtminhum">0</span>&#37;</td>
+                </tr>
+                <tr>
+                    <td>今日最高风速</td>
+                    <td><span id="wtmaxws">0</span>m/s</td>
+                </tr>
+                <tr>
+                    <td>今日最低风速</td>
+                    <td><span id="wtminws">0</span>m/s</td>
+                </tr>
+
+              </table>
+          </div>
+
+          </div>
+      </div>
+
+      <div class="baseBox centerMainBox2 " style="height:28%; width: 68% ; position: absolute; top: 65%; margin-left:2%">
+<!--        <img src="./img/down.png" alt="">-->
+        <img src="{{ url_for('static', filename='img/down.png') }}" alt="">
+        <div class="boxTitle2" style="width:26%; font-size: 1vw">用户数据详情</div>
+
+         <table id="user_top_table" class="table2">
+            <tr>
+                <th class="col1">序号</th>
+                <th class="col2">客户编号</th>
+                <th class="col3">客户名称</th>
+                <th class="col4">行业类别</th>
+                <th class="col5">昨日最高功率/KW</th>
+                <th class="col6">最高功率时刻</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>3201904143902</td>
+                <td>中广核林洋新能源泗洪有限公司</td>
+                <td>太阳能发电</td>
+                <td>61KW</td>
+                <td>05:00</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>3201904143902</td>
+                <td>江苏永达电源股份有限公司</td>
+                <td>电池制造</td>
+                <td>58KW</td>
+                <td>05:00</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>3201904143902</td>
+                <td>泗洪协合风力发电有限公司</td>
+                <td>风力发电</td>
+                <td>57KW</td>
+                <td>05:00</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>3201904143902</td>
+                <td>国家电投集团泗洪光伏发电有限公司</td>
+                <td>电力供应</td>
+                <td>54KW</td>
+                <td>05:00</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>3201904143902</td>
+                <td>泗洪通力新能源有限公司</td>
+                <td>太阳能发电</td>
+                <td>53KW</td>
+                <td>05:00</td>
+            </tr>
+        </table>
+    </div>
+
+
+  </div>
+</body>
+</html>
+
+
+<script>
+    var rows = document.getElementById('highlightable-table').getElementsByTagName('tr');
+
+    for (var i = 1; i < rows.length; i++) {
+      rows[i].addEventListener('mouseover', function() {
+        this.classList.add('highlighted-row');
+      });
+
+      rows[i].addEventListener('mouseout', function() {
+        this.classList.remove('highlighted-row');
+      });
+    }
+</script>
+
+<script>
+    function updateCurrentTime() {
+      var currentTimeElement = document.getElementById('current-time');
+      var now = new Date();
+      var year = now.getFullYear().toString();
+      var month = (now.getMonth()+1).toString().padStart(2, '0');
+      var day = now.getDate().toString().padStart(2, '0');
+      var hours = now.getHours().toString().padStart(2, '0');
+      var minutes = now.getMinutes().toString().padStart(2, '0');
+      // var seconds = now.getSeconds().toString().padStart(2, '0');
+      var timeString = year + '/' + month + '/' + day + '\t' + hours + ':' + minutes;
+      currentTimeElement.textContent = timeString;
+    }
+    updateCurrentTime();
+    setInterval(updateCurrentTime, 1000);
+</script>
+
+
+<!--<script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>-->
+<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+<!--<script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.0.0-beta.2/echarts.min.js"></script>-->
+<script src="{{ url_for('static', filename='js/echarts.js') }}"></script>
+<!--<script src="js/dataScoll.js"></script>-->
+<script src="{{ url_for('static', filename='js/dataScoll.js') }}"></script>
+
+<!-- 所有的表格更新函数 -->
+<script>
+function update_nav() {
+    // 发起 Ajax 请求获取新数据
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/update_nav', true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                // document.getElementById('updata_nav_prediction_power').textContent = xhr.responseText;  inerHTML
+                var data_nav = JSON.parse(xhr.responseText);
+                document.getElementById('updata_nav_prediction_power').textContent = data_nav.nowpower;
+            }
+        }
+    };
+    xhr.send();
+}
+
+function update_power_table() {
+    // 发起 Ajax 请求获取新数据
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/update_power_table', false);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                var power_table_data = JSON.parse(xhr.responseText);
+                document.getElementById('usernums').textContent = power_table_data.usernums;
+                document.getElementById('pk1max').textContent = power_table_data.pk1max;
+                document.getElementById('pk1min').textContent = power_table_data.pk1min;
+                document.getElementById('pkmax').textContent = power_table_data.pkmax;
+                document.getElementById('pkmin').textContent = power_table_data.pkmin;
+            }
+        }
+    };
+    xhr.send();
+}
+
+function update_weather_table() {
+    // 发起 Ajax 请求获取新数据
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/update_weather_table', true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                var weather_table_data = JSON.parse(xhr.responseText);
+                document.getElementById('wtstate').textContent = weather_table_data.wtstate;
+                document.getElementById('wtmaxtemp').textContent = weather_table_data.wtmaxtemp;
+                document.getElementById('wtmintemp').textContent = weather_table_data.wtmintemp;
+                document.getElementById('wtmaxhum').textContent = weather_table_data.wtmaxhum;
+                document.getElementById('wtminhum').textContent = weather_table_data.wtminhum;
+                document.getElementById('wtmaxws').textContent = weather_table_data.wtmaxws;
+                document.getElementById('wtminws').textContent = weather_table_data.wtminws;
+
+            }
+        }
+    };
+    xhr.send();
+}
+
+let user_top_table_data;
+let user_top_table_start = 0;
+function update_user_top_table() {
+    // 发起 Ajax 请求获取新数据
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/update_user_top_table', true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                user_top_table_data = JSON.parse(xhr.responseText);
+                var user_top_table = document.getElementById('user_top_table');
+                for(var i = 1; i < user_top_table.rows.length; i++){
+                    user_top_table.rows[i].cells[0].textContent = user_top_table_data.user_number[i-1];
+                    user_top_table.rows[i].cells[1].textContent = user_top_table_data.user_id[i-1];
+                    user_top_table.rows[i].cells[2].textContent = user_top_table_data.user_name[i-1];
+                    user_top_table.rows[i].cells[3].textContent = user_top_table_data.user_cat[i-1];
+                    user_top_table.rows[i].cells[4].textContent = user_top_table_data.max_power[i-1];
+                    user_top_table.rows[i].cells[5].textContent = user_top_table_data.max_power_time[i-1];
+                }
+            }
+        }
+    };
+    xhr.send();
+}
+
+
+function dynamic_user_top_table(){
+    var user_top_table = document.getElementById('user_top_table');
+    for(var i = 1; i < user_top_table.rows.length; i++){
+        user_top_table.rows[i].cells[0].textContent = user_top_table_data.user_number[user_top_table_start+i-1];
+        user_top_table.rows[i].cells[1].textContent = user_top_table_data.user_id[user_top_table_start+i-1];
+        user_top_table.rows[i].cells[2].textContent = user_top_table_data.user_name[user_top_table_start+i-1];
+        user_top_table.rows[i].cells[3].textContent = user_top_table_data.user_cat[user_top_table_start+i-1];
+        user_top_table.rows[i].cells[4].textContent = user_top_table_data.max_power[user_top_table_start+i-1];
+        user_top_table.rows[i].cells[5].textContent = user_top_table_data.max_power_time[user_top_table_start+i-1];
+    }
+}
+
+
+function checkAndUpdate() {
+  const now = new Date();
+  const minutes = now.getMinutes();
+  const hours = now.getHours();
+  if (minutes === 7) {
+      update_nav();  // 间隔一个小时
+      update_weather_table();
+  }
+  if (hours === 6 && minutes === 50) {
+      update_power_table();
+      update_user_top_table();
+  }
+  user_top_table_start = (user_top_table_start+5) % 20
+  dynamic_user_top_table();
+}
+
+// 立即运行一次
+update_power_table();
+update_nav();
+update_weather_table();
+update_user_top_table();
+// 每隔1分钟检查一次
+setInterval(checkAndUpdate, 60000);
+</script>
+
+
+<!-- 所有的曲线更新函数 -->
+<script>
+    var HYChart1 = echarts.init(document.getElementById('prediction'));
+    /**
+     * times:YYYY-mm-dd HHMMSS
+     * timeData:时间 H
+     * windsData:风速
+     * windxData:风向
+     * temData:温度
+     * rainData:降水
+     * humData:湿度
+     */
+    let Data = {
+        times: ["2023-09-25 11:00:00", "2023-09-25 12:00:00", "2023-09-25 13:00:00", "2023-09-25 14:00:00", "2023-09-25 15:00:00", "2023-09-25 16:00:00",
+                "2023-09-25 17:00:00", "2023-09-25 18:00:00", "2023-09-25 19:00:00", "2023-09-25 20:00:00", "2023-09-25 21:00:00", "2023-09-25 22:00:00"],
+        timeData: ["11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22"],
+        windxData: ["东南", "北", "东南", "东", "东南", "东南", "西", "北", "南", "东南", "东南", "东南"],
+        windsData: ["2.8", "1.4", "2.7", "3", "2.2", "1.4", "1.5", "1.9", "1.4", "1.8", "2", "3.4"],
+        temData: [9, 11, 13, 12, 11, 9, 9, 7, 6, 4, 3, 3],
+        rainData: [0, 0.2, 0.3, 1, 3, 4, 2.1, 0, 0, 0, 0, 0],
+        humData: [76, 76, 70, 62, 58, 53, 50, 49, 46, 44, 44, 42],
+        ptimes: ["2023-09-25 00:00:00", "2023-09-25 01:00:00", "2023-09-25 02:00:00", "2023-09-25 03:00:00",
+        "2023-09-25 04:00:00", "2023-09-25 05:00:00", "2023-09-25 06:00:00", "2023-09-25 07:00:00",
+        "2023-09-25 08:00:00", "2023-09-25 09:00:00", "2023-09-25 10:00:00", "2023-09-25 11:00:00",
+        "2023-09-25 12:00:00", "2023-09-25 13:00:00", "2023-09-25 14:00:00", "2023-09-25 15:00:00",
+        "2023-09-25 16:00:00", "2023-09-25 17:00:00", "2023-09-25 18:00:00", "2023-09-25 19:00:00",
+        "2023-09-25 20:00:00", "2023-09-25 21:00:00", "2023-09-25 22:00:00", "2023-09-25 23:00:00",
+        "2023-09-26 00:00:00", "2023-09-26 01:00:00", "2023-09-26 02:00:00", "2023-09-26 03:00:00",
+        "2023-09-26 04:00:00", "2023-09-26 05:00:00", "2023-09-26 06:00:00", "2023-09-26 07:00:00",
+        "2023-09-26 08:00:00", "2023-09-26 09:00:00", "2023-09-26 10:00:00", "2023-09-26 11:00:00",
+        "2023-09-26 12:00:00", "2023-09-26 13:00:00", "2023-09-26 14:00:00", "2023-09-26 15:00:00",
+        "2023-09-26 16:00:00", "2023-09-26 17:00:00", "2023-09-26 18:00:00", "2023-09-26 19:00:00",
+        "2023-09-26 20:00:00", "2023-09-26 21:00:00", "2023-09-26 22:00:00", "2023-09-26 23:00:00",],
+        ptimeData: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23",
+                   "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"],  // X 标签
+        power: [577, 581, 583, 584, 574, 594,
+                625, 671, 720, 801, 851, 873,
+                846, 836, 810, 761, 690, 611,
+                568, 566, 569, 569, 596, 596,
+                577, 581, 583, 584, 574, 594,
+                625, 671, 720, 801, 851, 873,
+                846, 836, 810, 761, 690, 611,
+                568, 566, 569, 569, 596, 596],
+        pred_max:[577, 581, 583, 584, 574, 594,
+                625, 671, 720, 801, 851, 873,
+                846, 836, 810, 761, 690, 611,
+                568, 566, 569, 569, 596, 596,
+                587, 591, 593, 594, 584, 604,
+                635, 681, 730, 821, 871, 903,
+                856, 856, 830, 771, 700, 631,
+                578, 576, 579, 579, 616, 606],
+
+        pred_min:[577, 581, 583, 584, 574, 594,
+                625, 671, 720, 801, 851, 873,
+                846, 836, 810, 761, 690, 611,
+                568, 566, 569, 569, 596, 596,
+                557, 561, 563, 564, 564, 574,
+                615, 651, 710, 791, 831, 853,
+                836, 816, 800, 751, 670, 601,
+                548, 546, 549, 549, 576, 576],
+    }
+
+    var ptimes = Data.ptimes.map(function (time) {
+        return new Date(time).getTime();
+    });
+
+    let colors = ['#FF6863', '#6EAB40', '#3BB5F5'];
+
+    option = {
+        color: colors,
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: { type: 'cross' },
+            formatter: function (params, ticket, callback) {
+                let index = params[0].dataIndex;
+                let Htm = `${Data.times[index]}<br>
+                    温度:${Data.temData[index]}℃<br>
+                    降水:${Data.rainData[index]}mm<br>
+                    风力:${Data.windsData[index].split('/')[0]}m/s  风向:${Data.windxData[index]}<br>
+                    湿度:${Data.humData[index]}%`
+                return Htm;
+            }
+        },
+        grid: {
+            top: '17%',
+            bottom: '20%',
+            left: '23%',
+            right: '10%'
+        },
+        dataZoom: {
+            bottom: '2%',
+            height: '16',
+            dataBackground: {
+                lineStyle: { color: '#39977D' },
+                areaStyle: { color: 'rgba(57,151,125,1)' }
+            },
+            borderColor: 'rgba(57,151,125,0)',
+            textStyle: { color: '#39977D' },
+            start: 0,
+            end: 100,
+            xAxisIndex: [0, 1, 2, 3]
+        },
+        xAxis: [
+        {
+
+            type: 'category',
+            position: 'bottom',
+            offset: 32,
+            axisTick: { show: false , alignWithLabel: true},
+            axisLine: { show: false },
+            axisLabel: {
+                show: true,
+                textStyle: { color: '#fff', fontSize: 10, lineHeight: 20 },
+            },
+            nameTextStyle: { color: '#585858', padding: [0, 0, 0, 0]},
+            nameLocation: 'start',
+            data: Data.windxData
+        },
+        // {
+        //     type: 'category',
+        //     axisLine: { show: false },
+        // },
+        {
+            name: '时间',
+            nameTextStyle: {color: '#fff'},
+            type: 'category',
+            position: 'bottom',
+            offset: 11,
+            axisTick: { alignWithLabel: true,textStyle: { color: '#fff' }, lineStyle:{color:'#fff'}},
+            axisLabel: {
+                show: true,
+                textStyle: { color: '#fff', fontSize: 10, lineHeight: 18 },
+            },
+            data: Data.timeData,
+
+        }
+        ],
+        yAxis: [{
+            type: 'value',
+            name: '温度(°C)',
+            scale: true,
+            position: 'left',
+            offset: 54,
+            axisTick: { lineStyle: { color: colors[0] }, inside: true },
+            nameTextStyle: { color: colors[0] },
+            axisLabel: { color: colors[0] },
+            splitLine: { show: false }
+        },
+        {
+            type: 'value',
+            name: '降水(mm)',
+            position: 'left',
+            axisTick: { lineStyle: { color: colors[1] }, inside: true },
+            nameTextStyle: { color: colors[1] },
+            axisLabel: { color: colors[1] },
+            splitLine: { show: false }
+        },
+        {
+            type: 'value',
+            name: '相对湿度(%)',
+            scale: true,
+            position: 'right',
+            axisTick: { lineStyle: { color: colors[2] }, inside: true },
+            nameTextStyle: { color: colors[2] },
+            axisLabel: { color: colors[2] },
+            splitLine: { show: false }
+        }
+        ],
+        series: [{
+            name: '温度',
+            type: 'line',
+            step: false,
+            label: { normal: { show: true, position: 'top' } },
+            data: Data.temData
+        },
+        {
+            name: '降水',
+            type: 'bar',
+            yAxisIndex: 1,
+            color: colors[1],
+            barWidth: '50%',
+            // label: { normal: { show: true, position: 'top' } },
+            data: Data.rainData
+        },
+        {
+            name: '相对湿度',
+            type: 'line',
+            step: false,
+            yAxisIndex: 2,
+            color: colors[2],
+            label: { normal: { show: true, position: 'top' } },
+            data: Data.humData
+        }
+        ]
+    };
+
+
+    var HYChart2 = echarts.init(document.getElementById('prediction_load'));
+
+
+    option2 = {
+        color: colors,
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: { type: 'cross' },
+            formatter: function (params, ticket, callback) {
+                let index = params[0].dataIndex;
+                let Htm = `${Data.ptimes[index]}<br>`
+                if (index < 24) {
+                    Htm += `功率:${Data.power[index]}MW<br>`
+                }
+                if (index >= 24){
+                    Htm += `预测功率:${Data.power[index]}MW<br>`
+                }
+                return Htm;
+            }
+        },
+        grid: {
+            top: '17%',
+            bottom: '14%',
+            left: '26%',
+            right: '13%'
+        },
+        {#dataZoom: {#}
+        {#    bottom: '2%',#}
+        {#    height: '16',#}
+        {#    dataBackground: {#}
+        {#        lineStyle: { color: '#fff' },#}
+        {#        areaStyle: { color: '#fff' }#}
+        {#    },#}
+        {#    borderColor: '#fff',#}
+        {#    textStyle: { color: '#fff' },#}
+        {#    start: 0,#}
+        {#    end: 100,#}
+        {#    xAxisIndex: [0, 1, 2, 3]},#}
+        xAxis: {
+            name: '时间',
+            nameTextStyle: {color: '#fff'},
+            position: 'bottom',
+            offset: 11,
+            type: 'time',
+            axisTick: { alignWithLabel: true,
+                        textStyle: { color: '#fff' },
+                        lineStyle:{color:'#fff'},
+                        inside: true},
+            axisLabel: {
+                textStyle: {
+                    fontSize: '1vw'  // 设置 x 轴刻度标签的字体大小
+                }
+         }
+        },
+        yAxis: {
+            type: 'value',
+            name: '功率(MW)',
+            scale: true,
+            position: 'left',
+            offset: 4,
+            axisTick: {show: false, lineStyle: { color: colors[0] }, inside: true },
+            nameTextStyle: { color: colors[0] },
+            axisLabel: { color: colors[0] },
+            splitLine: { show: false },
+        },
+        series: [{
+            name: '预测功率',
+            step: false,
+            label: { normal: { show: true, position: 'top',
+                    formatter:  function(params){
+                let index = params.dataIndex;
+                if (index%2=== 0){
+                    return Data.power[index];
+                }
+                else return '';
+                }
+            }},
+            data: Data.power.map(function (value, index) {
+                if (index < 24) {
+                    return [Data.ptimes[index], value];
+                }
+            }),
+            showSymbol: true,
+            symbolSize: 2,  // 设置点的大小
+            type: 'line',
+            color: colors[0],
+            yAxisIndex: 0,
+        },
+            {lineStyle: {type: 'dashed', width: 2},
+            name: '预测功率',
+            step: false,
+            label: { normal: { show: true, position: 'top',
+                    formatter:  function(params){
+                let index = params.dataIndex;
+                if (index%2=== 0){
+                    return Data.power[index];
+                }
+                else return '';
+                }
+            }},
+            data: Data.power.map(function (value, index) {
+                if (index >= 24) {
+                    return [Data.ptimes[index], value];
+                }
+            }),
+            showSymbol: true,
+            symbolSize: 2,  // 设置点的大小
+            type: 'line',
+            color: colors[0],
+            yAxisIndex: 0,
+        }
+
+        ],
+    };
+
+
+    HYChart1.setOption(option)
+    HYChart2.setOption(option2)
+    // setInterval(function (){
+    //     numInit();
+    //     HYChart1.clear();
+    //     HYChart1.setOption(option);
+    // }, 7000)
+
+    // 更新曲线数据
+    function update_power_curve() {
+        // 发起 Ajax 请求获取新数据
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/update_power_curve', true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    var power_curve = JSON.parse(xhr.responseText);
+                    HYChart2.setOption({
+                        {#legend: {#}
+                             {#data: [ '预测功率(99%分位数)',  '预测功率(1%)', '预测功率(50%)'],#}
+                        {#     data: ['预测功率'],},#}
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: { type: 'cross' },
+                            formatter: function (params, ticket, callback) {
+                                let index = params[0].dataIndex;
+                                let Htm = `${power_curve.ptimes[index]}<br>`
+                                if (index < 24) {
+                                    Htm += `功率:${power_curve.power[index]}MW<br>`
+                                }
+                                if (index >= 24){
+                                    Htm += `预测功率:${power_curve.power[index]}MW<br>`
+                                }
+                                return Htm;
+                            }
+                        },
+                        series: [{
+
+                            label: { normal: { show: true, position: 'top',
+                                    formatter:  function(params){
+                                let index = params.dataIndex;
+                                if (index%2=== 0){
+                                    return power_curve.power[index];
+                                }
+                                else return '';
+                                }
+                            }},
+                            data: power_curve.power.map(function (value, index) {
+                                if (index < 24) {
+                                    return {
+                                        value: [power_curve.ptimes[index], value],
+                                    }
+                                }
+                            }),
+                        },
+                            {lineStyle: {
+                                        type: 'dashed',
+                                        width: 2
+                                    },
+                            label: { normal: { show: true, position: 'top',
+                                    formatter:  function(params){
+                                let index = params.dataIndex;
+                                if (index%2=== 0){
+                                    return power_curve.power[index];
+                                }
+                                else return '';
+                                }
+                            }},
+                            data: power_curve.power.map(function (value, index) {
+                                if (index >= 24) {
+                                    return {
+                                        value: [power_curve.ptimes[index], value],
+                                    }
+                                }
+                            }),
+                        }
+                        ],
+                    });
+
+                }
+            }
+        };
+        xhr.send();
+    }
+    // 更新曲线数据
+    function update_weather_curve() {
+        // 发起 Ajax 请求获取新数据
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/update_weather_curve', true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    var weather_curve = JSON.parse(xhr.responseText);
+                    HYChart1.setOption({
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: { type: 'cross' },
+                            formatter: function (params, ticket, callback) {
+                                let index = params[0].dataIndex;
+                                let Htm = `${weather_curve.times[index]}<br>
+                                    温度:${weather_curve.tempData[index]}℃<br>
+                                    降水:${weather_curve.rainData[index]}mm<br>
+                                    风力:${weather_curve.windsData[index].split('/')[0]}m/s  风向:${weather_curve.windxData[index]}<br>
+                                    湿度:${weather_curve.humData[index]}%`
+                                return Htm;
+                            }
+                        },
+                        xAxis: [
+                            {data: weather_curve.windxData},
+                            {data: weather_curve.timeData}
+                        ],
+                        series: [
+                            {data: weather_curve.tempData},
+                            {data: weather_curve.rainData},
+                            {data: weather_curve.humData}
+                        ]
+                    });
+                }
+            }
+        };
+        xhr.send();
+    }
+
+
+    function checkAndUpdate() {
+        const now = new Date();
+        const minutes = now.getMinutes();
+        const hours = now.getHours();
+        if (minutes === 9) {
+            update_weather_curve()  // 间隔一个小时更新一次
+        }
+        if (hours === 6 && minutes === 55) {
+            update_power_curve()
+        }
+        // // test
+        // update_power_curve()
+        // update_weather_curve()
+    }
+    // 立即运行一次
+    update_weather_curve()
+    update_power_curve()
+    // 每隔1分钟检查一次
+    setInterval(checkAndUpdate, 60000);
+</script>
+
+<script>
+    document.getElementById('hisloadButton').addEventListener('click', function () {
+        window.location.href = "/hisload";
+    });
+</script>

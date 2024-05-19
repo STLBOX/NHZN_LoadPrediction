@@ -1,0 +1,40 @@
+2024-05-13 22:48:54,661 - 初始化完成K-2时的power and totalpower table, 总记录数据150816
+2024-05-13 22:48:54,818 - the number of total mentors are 14019
+2024-05-13 22:48:54,880 - 初始化完成K-2时的power and totalpower table, 总记录数据266544
+2024-05-13 22:48:54,911 - the number of total mentors are 6635
+2024-05-13 22:49:59,342 - 初始化完成K-2时的power and totalpower table, 总记录数据277992
+2024-05-13 22:49:59,420 - the number of total mentors are 7193
+2024-05-13 22:51:14,406 - 初始化完成K-2时的power and totalpower table, 总记录数据306552
+2024-05-13 22:51:14,595 - getPowerData_threadingpool 运行时间: 0.1576366424560547 s
+2024-05-13 22:51:14,642 - 获取token失败！ 失败原因：HTTPConnectionPool(host='egw.jn.js.sgcc.com.cn', port=80): Max retries exceeded with url: /xtjs-oauth-center/oauth/token (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001D2383482E0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')) 
+2024-05-13 22:51:14,642 - getSHID()失败！采用默认id! 失败原因:HTTPConnectionPool(host='egw.jn.js.sgcc.com.cn', port=80): Max retries exceeded with url: /mc/service/mysql/data/nearestWeatherStation?data_from=20&device_type=6&latitude=33.5&longitude=118.5&loginid=11 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001D2383486D0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')) 
+2024-05-13 22:51:14,657 - init_weather_partial() 失败， 失败原因HTTPConnectionPool(host='egw.jn.js.sgcc.com.cn', port=80): Max retries exceeded with url: /mc/service/mysql/data/realWeatherInfoHis?data_from=20&end_time=2024-05-12%252023%253A30%253A00&id=101191304&page_num=1&page_size=10000&start_time=2024-05-12%252000%253A00%253A00 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001D2383485B0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed'))
+2024-05-13 22:51:14,657 - request_flag:True, 采用默认值from sim_txt/hst.txt
+2024-05-13 22:51:14,657 - init_weather_partial() 时获取的数据的数量为24, request_flag,True
+2024-05-13 22:51:14,689 - 气象数据 K K-1 初始化完成 
+2024-05-13 22:51:14,689 - 获取token失败！ 失败原因：HTTPConnectionPool(host='egw.jn.js.sgcc.com.cn', port=80): Max retries exceeded with url: /xtjs-oauth-center/oauth/token (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001D238160F40>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')) 
+2024-05-13 22:51:14,689 - getSHID()失败！采用默认id! 失败原因:HTTPConnectionPool(host='egw.jn.js.sgcc.com.cn', port=80): Max retries exceeded with url: /mc/service/mysql/data/nearestWeatherStation?data_from=20&device_type=6&latitude=33.5&longitude=118.5&loginid=11 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001D238160C40>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')) 
+2024-05-13 22:51:14,689 - first request : getWeatherDataP() 获取预测值失败！ 失败原因：HTTPConnectionPool(host='egw.jn.js.sgcc.com.cn', port=80): Max retries exceeded with url: /mc/service/mysql/data/forecastWeatherHour?cycle=HOUR&data_from=20&end_time=2024-05-14%252000%253A00%253A00&id=101191304&page_num=1&page_size=10000&start_time=2024-05-13%252023%253A00%253A00 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001D238348490>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')) 
+2024-05-13 22:51:14,689 - first request : getWeatherDataP() 获取预测值失败！ 失败原因：HTTPConnectionPool(host='egw.jn.js.sgcc.com.cn', port=80): Max retries exceeded with url: /mc/service/mysql/data/forecastWeatherHour?cycle=HOUR&data_from=20&end_time=2024-05-14%252000%253A00%253A00&id=101191304&page_num=1&page_size=10000&start_time=2024-05-13%252023%253A00%253A00 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001D238348490>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')) 
+2024-05-13 22:51:14,923 - 获取token失败！ 失败原因：HTTPConnectionPool(host='egw.jn.js.sgcc.com.cn', port=80): Max retries exceeded with url: /xtjs-oauth-center/oauth/token (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001D238166310>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')) 
+2024-05-13 22:51:14,923 - getSHID()失败！采用默认id! 失败原因:HTTPConnectionPool(host='egw.jn.js.sgcc.com.cn', port=80): Max retries exceeded with url: /mc/service/mysql/data/nearestWeatherStation?data_from=20&device_type=6&latitude=33.5&longitude=118.5&loginid=11 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001D2381662B0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')) 
+2024-05-13 22:51:14,923 - first request: getWeatherDataN() failed！ the reason：HTTPConnectionPool(host='egw.jn.js.sgcc.com.cn', port=80): Max retries exceeded with url: /mc/service/mysql/data/realWeatherInfo?ids=101191304&page_num=1&page_size=10000&source=20 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001D2381662E0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')), request again
+2024-05-13 22:51:14,923 - first request: getWeatherDataN() failed！ the reason：HTTPConnectionPool(host='egw.jn.js.sgcc.com.cn', port=80): Max retries exceeded with url: /mc/service/mysql/data/realWeatherInfo?ids=101191304&page_num=1&page_size=10000&source=20 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001D2381662E0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed'))
+2024-05-13 22:51:14,923 - delete_hst_data()删除前Power总记录数量150816
+2024-05-13 22:51:15,127 - delete_hst_data()删除后Power总记录数量150816
+2024-05-13 22:54:02,646 - 初始化完成K-2时的power and totalpower table, 总记录数据150816
+2024-05-13 22:54:02,833 - the number of total mentors are 14019
+2024-05-13 22:54:02,880 - 初始化完成K-2时的power and totalpower table, 总记录数据266544
+2024-05-13 22:54:02,943 - 初始化完成K-2时的power and totalpower table, 总记录数据277992
+2024-05-13 22:54:03,021 - 初始化完成K-2时的power and totalpower table, 总记录数据306552
+2024-05-13 22:54:03,271 - getPowerData<class '__main__.Power'>_threadingpool()前总记录数据60840
+2024-05-13 22:54:03,318 - 获取token失败！ 失败原因：HTTPConnectionPool(host='egw.jn.js.sgcc.com.cn', port=80): Max retries exceeded with url: /xtjs-oauth-center/oauth/token (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000022E95E11FA0>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed')) 
+2024-05-13 22:54:03,349 - getPowerData() 电表唯一ID:230003422536，请求失败！ 失败原因：HTTPConnectionPool(host='egw.jn.js.sgcc.com.cn', port=80): Max retries exceeded with url: /tps/bff/historyLineData/queryEMpCurveOfMeter (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000022E94A36B50>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed'))
+2024-05-13 22:54:03,349 - getPowerData() 电表唯一ID:8200000022724019，请求失败！ 失败原因：HTTPConnectionPool(host='egw.jn.js.sgcc.com.cn', port=80): Max retries exceeded with url: /tps/bff/historyLineData/queryEMpCurveOfMeter (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000022E94BBB820>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed'))
+2024-05-13 22:54:03,349 - getPowerData() 电表唯一ID:230003422536，请求失败！ 采用默认值0
+2024-05-13 22:54:03,349 - getPowerData() 电表唯一ID:8200000022724019，请求失败！ 采用默认值0
+2024-05-13 22:58:03,450 - 初始化完泗洪县的user table, 总记录数据4877 
+2024-05-13 22:58:09,903 - 初始化完宿迁市区的user table, 总记录数据14019 
+2024-05-13 22:58:12,443 - 初始化完泗阳县的user table, 总记录数据7193 
+2024-05-13 22:58:14,748 - 初始化完沭阳县的user table, 总记录数据6635 
+2024-05-13 22:58:14,768 - the number of total mentors are 4877

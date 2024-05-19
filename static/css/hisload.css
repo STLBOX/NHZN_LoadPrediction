@@ -1,0 +1,249 @@
+
+body,
+html,
+.main {
+    width : 100%;
+    height: 100%
+}
+
+.main {
+    position       : relative;
+    background-size: cover;
+    background-color: hsla(240,39%,10%,1.00);
+}
+
+.nav {
+    position       : relative;
+    top            : .5vw;
+    width          : 100%;
+    height         : 5vw;
+    background     : url(../img/top.png) no-repeat;
+    background-size: 100%;
+    text-align     : center;
+    line-height    : 4vw;
+    color          : #0efcff;
+    font-size      : 1.6vw;
+    letter-spacing : .4vw;
+}
+
+.nav_btn {
+    position: relative;
+    top     : -3.5vw;
+    width   : 100%;
+    height  : 2vw;
+    /*background-color: red;*/
+}
+
+.btn_left {
+    float      : left;
+    width      : 27%;
+    margin-left: 5%;
+    height     : 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn_right {
+    float       : right;
+    width       : 25%;
+    margin-right: 5.2%;
+    height      : 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn_list {
+    position      : relative;
+    float         : left;
+    width         : 6.5vw;
+    height        : 2vw;
+    text-align    : center;
+    line-height   : 1.6vw;
+    font-size     : 1.2vw;
+    color         : #0efcff;
+    letter-spacing: .1vw;
+    cursor        : pointer;
+}
+
+.btn_show {
+    position      : relative;
+    float         : left;
+    width         : 6.5vw;
+    height        : 2vw;
+    text-align    : center;
+    line-height   : 1.6vw;
+    font-size     : 1.2vw;
+    color         : #0efcff;
+    letter-spacing: .1vw;
+}
+
+.btn_list:before {
+    content  : '';
+    position : absolute;
+    top      : 0;
+    right    : 0;
+    bottom   : 0;
+    left     : 0;
+    border   : 1px solid #6176AF;
+    /*transform: skewX(-38deg);*/
+}
+
+.btn_list:hover::before {
+    border-color: #0efcff;
+    box-shadow  : 1px 1px 3px 1px #0efcff inset;
+}
+
+
+.content1{
+    position       : relative;
+    top            : -4%;
+    width          : 100%;
+    height         : 55%;
+    display        : flex;
+    /*background-color: red;*/
+}
+
+.content_curve{
+    display         : flex;
+    flex-direction  : column;
+    flex            : 6.5;
+}
+
+.curve_fig{
+    flex            : 9;
+}
+
+.curve_title{
+    flex            : 1;
+    font-size       : 1vw;
+    text-align      : center;
+    color           : #0efcff;
+}
+
+.content_pie{
+    display         : flex;
+    flex-direction  : column;
+    flex            : 3.5;
+}
+
+.pie_fig{
+    flex            : 9;
+}
+
+.pie_title{
+    flex            : 1;
+    font-size       : 1vw;
+    text-align      : center;
+    color           : #0efcff;
+}
+
+.content2{
+    position       : relative;
+    top            : -3%;
+    width          : 95%;
+    left           : 2.5%;
+    height         : 22%;
+    display        : flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction  : column;
+   /*background-color: blue;*/
+}
+
+.table_title {
+    flex            : 1;
+    font-size       : 1vw;
+    text-align      : center;
+    color           : #0efcff;
+}
+
+.table {
+    flex            : 9;
+    justify-content: center;
+    width           : 96%;
+}
+
+.content3{
+    display        : flex;
+    align-items    : center; /* 在垂直方向上居中 */
+    /*border-top     : 2px solid #0efcff;*/
+    font-size      : 1vw;
+    color          : #0efcff;
+    position       : relative;
+    top            : -2%;
+    width          : 80%;
+    height         : 5%;
+    left           : 3%;
+    /*background-color: red;*/
+}
+
+button{
+    top:1%;
+    font-size: 1vw; /* 设置字体大小 */
+    width: 5vw; /* 设置按钮宽度 */
+    margin-left: 2vw;
+}
+
+button:hover {
+    background-color: #0efcff; /* 鼠标悬停时改变背景颜色 */
+}
+
+label{
+    margin-left: 2vw;
+}
+
+
+.table_content{
+    /*width: 95%;*/
+    /*margin-top: 4%;*/
+    /*margin-left: 2%;*/
+    text-align: center;
+    color: #fff;
+    font-size: 1vw;
+    border-collapse: collapse;
+}
+
+#user_top_table {
+    table-layout: fixed; /* 使用固定表格布局 */
+    width: 100%;
+}
+.col1 {
+  width: 5%;
+}
+.col2 {
+  width: 6%;
+}
+.col3 {
+  width: 10%;
+}
+.col4 {
+  width: 6%;
+}
+.col5 {
+  width: 6%;
+}
+.col6 {
+  width: 6%;
+}
+.col7 {
+  width: 6%;
+}
+.col8 {
+  width: 6%;
+}
+
+
+thead{
+    border-top-width: 2px;
+    border-top-style: solid;
+    border-top-color: #fff;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: #fff;
+}
+
+tfoot{
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+    border-bottom-color: #fff;
+}
